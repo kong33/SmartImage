@@ -6,6 +6,9 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 from transformers import VisionEncoderDecoderModel, ViTImageProcessor, AutoTokenizer
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI(
     title="Smart Image Captioning API",
