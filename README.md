@@ -72,7 +72,7 @@ Start the FastAPI server using Uvicorn:
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-> ** Note on First Run:** The very first time you start the server or make an API request, the application will download the AI model (~1GB) from Hugging Face. This may take a few minutes depending on your internet connection. Subsequent runs will be instant.
+> Note on First Run: The very first time you start the server or make an API request, the application will download the AI model (~1GB) from Hugging Face. This may take a few minutes depending on your internet connection. Subsequent runs will be instant.
 
 ---
 
