@@ -26,8 +26,8 @@ It uses the ViT-GPT2 model to automatically generate highly accurate alt text fo
 
 ```bash
 # Clone the repository
-git clone [https://github.com/your-username/your-backend-repo.git](https://github.com/your-username/your-backend-repo.git)
-cd your-backend-repo
+git clone https://github.com/kong33/SmartImage.git
+cd SmartImage
 
 # Create and activate a virtual environment
 python -m venv venv
