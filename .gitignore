@@ -1,4 +1,55 @@
+# Python virtual environments
 venv/
+.venv/
+env/
+ENV/
+
+# Python cache
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+
+# Environment variables
 .env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# npm package output
+*.tgz
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE / editor
+.vscode/
+.idea/
+
+# Test / coverage
+coverage/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Build outputs
+dist/
+build/
+
+# Model / cache files
+.cache/
+models/
+*.bin
+*.pt
+*.pth
+*.safetensors
+
+# Logs
+logs/
+*.log

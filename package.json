@@ -1,0 +1,16 @@
+{
+  "name": "react-a11y-auto-caption-server",
+  "version": "1.0.0",
+  "description": "Local AI caption server for react-a11y-auto-caption",
+  "type": "module",
+  "bin": {
+    "react-a11y-auto-caption-server": "./bin/start-server.js"
+  },
+  "files": [
+    "bin",
+    "main.py",
+    "requirements.txt",
+    "README.md"
+  ],
+  "license": "MIT"
+}
