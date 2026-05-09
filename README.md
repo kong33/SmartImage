@@ -1,101 +1,126 @@
-# SmartImage AI Captioning API
+# react-a11y-auto-caption-server
 
-> A lightweight, secure FastAPI microservice designed to power the `react-a11y-auto-caption` library. <br/>
-It uses the ViT-GPT2 model to automatically generate highly accurate alt text for images, enhancing web accessibility (a11y).
+Local AI caption server for `react-a11y-auto-caption`.
 
-[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/)
-[![Framework](https://img.shields.io/badge/FastAPI-0.100%2B-009688.svg)](https://fastapi.tiangolo.com/)
-[![AI Model](https://img.shields.io/badge/Model-ViT--GPT2-yellow.svg)](https://huggingface.co/nlpconnect/vit-gpt2-image-captioning)
+Run a FastAPI image-captioning server with one command:
+
+```bash
+npx react-a11y-auto-caption-server
+```
+
+This server uses the ViT-GPT2 image captioning model to generate alt text for images.
+
+---
 
 ## Features
 
-- **Ready-to-Use:** Plug-and-play architecture for image captioning.
-- **Secure by Default:** Strict CORS middleware configuration using environment variables.
-- **Hardware Agnostic:** Automatically detects and runs on GPU (CUDA) if available, gracefully falling back to CPU.
-- **Optimized for Frontend:** Returns clean, stripped captions ready for immediate UI injection.
+- Run the server with `npx`
+- Automatic Python environment setup
+- Local-first image captioning
+- Works with `react-a11y-auto-caption`
+- Uses GPU if available, otherwise falls back to CPU
 
 ---
 
-## Installation & Setup
+## Requirements
 
-### 1. Prerequisites
-- Python 3.8 or higher
-- Git
+- Node.js 18+
+- Python 3.8+
+- pip
 
-### 2. Clone and Setup Environment
+Check your environment:
 
 ```bash
-# Clone the repository
-git clone https://github.com/kong33/SmartImage.git
-cd SmartImage
-
-# Create and activate a virtual environment
-python -m venv venv
-
-# Mac/Linux:
-source venv/bin/activate
-# Windows:
-.\venv\Scripts\activate
+node --version
+python --version
+pip --version
 ```
 
-### 3. Install Dependencies
+---
+
+## Quick Start
 
 ```bash
-pip install -r requirements.txt
+npx react-a11y-auto-caption-server
 ```
-*(Note: If you are using a GPU, make sure to install the specific PyTorch version for your CUDA toolkit from the [official PyTorch website](https://pytorch.org/).)*
 
----
+The server starts at:
 
-## Configuration (Security)
+```txt
+http://127.0.0.1:8000
+```
 
-For security reasons, this server blocks all cross-origin requests by default.<br/>
-You **MUST** create a `.env` file in the root directory to specify which frontends are allowed to communicate with this API.
+Caption endpoint:
 
-Create a `.env` file:
-
-```env
-# Allow local React/Next.js development servers
-ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5173
-
-# For production, add your domain
-ALLOWED_ORIGINS=https://your-frontend-domain.com
+```txt
+http://127.0.0.1:8000/api/generate-caption
 ```
 
 ---
 
-## Running the Server
+## First Run Notice
 
-Start the FastAPI server using Uvicorn:
+The first run may take a few minutes.
+
+The CLI will:
+
+- create a Python virtual environment
+- install Python dependencies
+- start the FastAPI server
+
+The AI model may also be downloaded on the first caption request.  
+After the first setup, future runs should be faster.
+
+---
+
+## Usage with React
+
+Install the React package:
 
 ```bash
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+npm install react-a11y-auto-caption
 ```
 
-> Note on First Run: The very first time you start the server or make an API request, the application will download the AI model (~1GB) from Hugging Face. This may take a few minutes depending on your internet connection. Subsequent runs will be instant.
+Start the local server:
+
+```bash
+npx react-a11y-auto-caption-server
+```
+
+Use it in your app:
+
+```tsx
+import { SmartImage } from "react-a11y-auto-caption";
+
+export default function Example() {
+  return (
+    <SmartImage
+      src="/example.jpg"
+      apiEndpoint="http://127.0.0.1:8000/api/generate-caption"
+    />
+  );
+}
+```
 
 ---
 
-## API Reference
+## API
 
 ### `POST /api/generate-caption`
 
-Generates an accessibility caption for the uploaded image.
+Request:
 
-**Request:**
-- **Content-Type:** `multipart/form-data`
-- **Body:** `file` (The image file: jpg, png, etc.)
+- `Content-Type: multipart/form-data`
+- Body field: `file`
 
-**cURL Example:**
+Example:
 
 ```bash
-curl -X POST "http://localhost:8000/api/generate-caption" \
-  -H "accept: application/json" \
-  -H "Content-Type: multipart/form-data" \
-  -F "file=@/path/to/your/image.jpg"
+curl -X POST "http://127.0.0.1:8000/api/generate-caption" \
+  -F "file=@/path/to/image.jpg"
 ```
 
-**Successful Response (200 OK):**
+Response:
 
 ```json
 {
@@ -104,11 +129,47 @@ curl -X POST "http://localhost:8000/api/generate-caption" \
 }
 ```
 
-**Error Response (500 Internal Server Error):**
+---
 
-```json
-{
-  "status": "error",
-  "message": "Internal server error: [detailed error message]"
-}
+## Manual Development
+
+```bash
+git clone https://github.com/kong33/SmartImage.git
+cd SmartImage
+
+python -m venv venv
+.\venv\Scripts\activate
+
+pip install -r requirements.txt
+uvicorn main:app --host 127.0.0.1 --port 8000 --reload
 ```
+
+For macOS/Linux:
+
+```bash
+source venv/bin/activate
+```
+
+---
+
+## Environment
+
+If you use CORS settings, create a `.env` file:
+
+```env
+ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5173
+```
+
+Do not commit `.env`.
+
+---
+
+## Related
+
+- `react-a11y-auto-caption`
+
+---
+
+## License
+
+MIT
