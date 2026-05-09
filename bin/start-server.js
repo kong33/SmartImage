@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { spawnSync } from "node:child_process";
 import path from "node:path";
 import fs from "node:fs";
@@ -6,6 +8,7 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Package root
 const serverDir = path.join(__dirname, "..");
 const venvDir = path.join(serverDir, ".venv");
 
@@ -38,11 +41,36 @@ This may take a few minutes because:
 - Python dependencies will be installed
 - The AI model may be downloaded on first request
 
-Server URL:
-  http://127.0.0.1:8000
+After the first setup, future runs should be faster.
 
 Please keep this terminal open while using the caption server.
 `);
+}
+
+function getPort() {
+  const portArgIndex = process.argv.findIndex(
+    (arg) => arg === "--port" || arg === "-p"
+  );
+
+  if (portArgIndex !== -1) {
+    const portValue = process.argv[portArgIndex + 1];
+
+    if (!portValue) {
+      console.error("Missing port value.");
+      console.error("Example: npx react-a11y-auto-caption-server --port 5000");
+      process.exit(1);
+    }
+
+    if (!/^[0-9]+$/.test(portValue)) {
+      console.error("Invalid port value.");
+      console.error("Port must be a number.");
+      process.exit(1);
+    }
+
+    return portValue;
+  }
+
+  return process.env.PORT || "8000";
 }
 
 function run(command, args, options = {}) {
@@ -59,6 +87,7 @@ function run(command, args, options = {}) {
 
 printBanner();
 
+const port = getPort();
 const isFirstRun = !fs.existsSync(venvDir);
 
 if (isFirstRun) {
@@ -83,13 +112,24 @@ run(venvPython, ["-m", "pip", "install", "-r", "requirements.txt"], {
 console.log(`
 Starting caption server...
 
-Local endpoint:
-  http://127.0.0.1:8000/generate-caption
+Server URL:
+  http://127.0.0.1:${port}
+
+Caption endpoint:
+  http://127.0.0.1:${port}/api/generate-caption
 `);
 
 run(
   venvPython,
-  ["-m", "uvicorn", "main:app", "--host", "127.0.0.1", "--port", "8000"],
+  [
+    "-m",
+    "uvicorn",
+    "main:app",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    port,
+  ],
   {
     cwd: serverDir,
   }
