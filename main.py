@@ -44,7 +44,7 @@ print("[Info] Downloading and loading the AI model... (This may take a while on 
 model = VisionEncoderDecoderModel.from_pretrained(MODEL_NAME).to(device)
 feature_extractor = ViTImageProcessor.from_pretrained(MODEL_NAME)
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-print("✅ [Success] AI Model loaded successfully!")
+print("[Success] AI Model loaded successfully!")
 
 # Generation configurations
 gen_kwargs = {
