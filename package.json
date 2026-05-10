@@ -1,6 +1,6 @@
 {
   "name": "react-a11y-auto-caption-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Local AI caption server for react-a11y-auto-caption",
   "type": "module",
   "bin": {
