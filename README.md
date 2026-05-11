@@ -1,6 +1,6 @@
 # react-a11y-auto-caption-server
 
-Local AI caption server for `react-a11y-auto-caption`.
+Local AI caption server for [`react-a11y-auto-caption`](https://www.npmjs.com/package/react-a11y-auto-caption).
 
 Run a FastAPI image-captioning server with one command:
 
@@ -15,9 +15,10 @@ This server uses the ViT-GPT2 image captioning model to generate alt text for im
 ## Features
 
 - Run the server with `npx`
-- Automatic Python environment setup
+- Automatic Python virtual environment setup
 - Local-first image captioning
 - Works with `react-a11y-auto-caption`
+- Custom port support
 - Uses GPU if available, otherwise falls back to CPU
 
 ---
@@ -36,6 +37,13 @@ python --version
 pip --version
 ```
 
+On some systems, use:
+
+```bash
+python3 --version
+pip3 --version
+```
+
 ---
 
 ## Quick Start
@@ -44,7 +52,7 @@ pip --version
 npx react-a11y-auto-caption-server
 ```
 
-The server starts at:
+Default server URL:
 
 ```txt
 http://127.0.0.1:8000
@@ -54,6 +62,39 @@ Caption endpoint:
 
 ```txt
 http://127.0.0.1:8000/api/generate-caption
+```
+
+---
+
+## Custom Port
+
+The default port is `8000`.
+
+Use `--port` or `-p` to run the server on another port:
+
+```bash
+npx react-a11y-auto-caption-server --port 5000
+```
+
+or:
+
+```bash
+npx react-a11y-auto-caption-server -p 5000
+```
+
+Then use this endpoint in your frontend:
+
+```txt
+http://127.0.0.1:5000/api/generate-caption
+```
+
+Example:
+
+```tsx
+<SmartImage
+  src="/example.jpg"
+  apiEndpoint="http://127.0.0.1:5000/api/generate-caption"
+/>
 ```
 
 ---
@@ -81,7 +122,7 @@ Install the React package:
 npm install react-a11y-auto-caption
 ```
 
-Start the local server:
+Start the local caption server:
 
 ```bash
 npx react-a11y-auto-caption-server
@@ -101,6 +142,44 @@ export default function Example() {
   );
 }
 ```
+
+---
+
+## CORS
+
+For local development, the server allows local frontend origins by default.
+
+If `ALLOWED_ORIGINS` is not set, local origins such as these are allowed:
+
+```txt
+http://localhost:<any-port>
+http://127.0.0.1:<any-port>
+```
+
+For production or internal company servers, set `ALLOWED_ORIGINS` manually.
+
+Example:
+
+```env
+ALLOWED_ORIGINS=https://your-frontend-domain.com,http://localhost:3000
+```
+
+If your frontend runs on your laptop and the caption server runs on another machine, allow the frontend origin:
+
+```env
+ALLOWED_ORIGINS=http://localhost:3000
+```
+
+Then use the server machine address as the API endpoint:
+
+```tsx
+<SmartImage
+  src="/example.jpg"
+  apiEndpoint="http://192.168.0.20:8000/api/generate-caption"
+/>
+```
+
+Do not commit your `.env` file.
 
 ---
 
@@ -150,23 +229,47 @@ For macOS/Linux:
 source venv/bin/activate
 ```
 
----
+Run on another port:
 
-## Environment
-
-If you use CORS settings, create a `.env` file:
-
-```env
-ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5173
+```bash
+uvicorn main:app --host 127.0.0.1 --port 8001 --reload
 ```
 
-Do not commit `.env`.
+---
+
+## Troubleshooting
+
+### Port 8000 is unavailable
+
+If port `8000` is already used or blocked, run the server on another port:
+
+```bash
+npx react-a11y-auto-caption-server --port 8001
+```
+
+Then update your frontend endpoint:
+
+```tsx
+<SmartImage
+  src="/example.jpg"
+  apiEndpoint="http://127.0.0.1:8001/api/generate-caption"
+/>
+```
+
+### The API request does not run
+
+Check that:
+
+- `apiEndpoint` points to `/api/generate-caption`
+- your frontend uses the same port as the server
+- your image does not already have an `alt` value if you expect AI generation
+- your frontend package is updated to the latest version
 
 ---
 
 ## Related
 
-- `react-a11y-auto-caption`
+- [`react-a11y-auto-caption`](https://www.npmjs.com/package/react-a11y-auto-caption)
 
 ---
 
