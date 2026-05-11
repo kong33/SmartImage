@@ -1,14 +1,3 @@
----
-title: react-a11y-auto-caption-server
-emoji: 🖼️
-colorFrom: blue
-colorTo: green
-sdk: docker
-app_port: 7860
-pinned: false
-license: mit
----
-
 # react-a11y-auto-caption-server
 
 Local AI caption server for `react-a11y-auto-caption`.
